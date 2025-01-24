@@ -1,5 +1,6 @@
 package com.drifter.spring_6_reactive.controllers;
 
+import com.drifter.spring_6_reactive.domain.Beer;
 import com.drifter.spring_6_reactive.domain.BeerDTO;
 import com.drifter.spring_6_reactive.services.BeerService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,12 @@ public class BeerController {
     public static final String BEER_PATH = "api/v2/beer";
     public static final String BEER_PATH_WITH_ID = BEER_PATH + "/{beerId}";
     private final BeerService beerService;
+
+    @PatchMapping(BEER_PATH_WITH_ID)
+    Mono<ResponseEntity<Void>> patchBeer(@PathVariable("beerId") Integer beerId, @RequestBody BeerDTO beerDTO) {
+        return beerService.patchBeer(beerId, beerDTO)
+                .map(updatedDto -> ResponseEntity.ok().build());
+    }
 
     @PutMapping(BEER_PATH_WITH_ID)
     Mono<ResponseEntity<Void>> updateExistingBeer(@PathVariable("beerId") Integer beerId,
