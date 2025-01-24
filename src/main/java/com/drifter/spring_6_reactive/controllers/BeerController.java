@@ -17,6 +17,8 @@ public class BeerController {
 
     public static final String BEER_PATH = "api/v2/beer";
     public static final String BEER_PATH_WITH_ID = BEER_PATH + "/{beerId}";
+    public static final String LOCALHOST_BEER_PATH = "http://localhost:8080/" + BEER_PATH;
+    public static final String LOCALHOST_BEER_PATH_WITH_ID = "http://localhost:8080/" + BEER_PATH_WITH_ID;
     private final BeerService beerService;
 
     @DeleteMapping(BEER_PATH_WITH_ID)
