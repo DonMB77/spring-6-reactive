@@ -11,11 +11,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Component
 public class BootStrapData implements CommandLineRunner {
 
-    //@Autowired
+    @Autowired
     BeerRepository beerRepository;
 
     @Override
