@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class BeerServiceImpl implements BeerService {
@@ -30,6 +33,20 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public Mono<BeerDTO> saveNewBeer(BeerDTO beerDTO) {
         return beerRepository.save(beerMapper.beerDtoToBeer(beerDTO))
+                .map(beerMapper::beerToBeerDto);
+    }
+
+    @Override
+    public Mono<BeerDTO> updateExistingBeer(Integer beerId, BeerDTO beerDTO) {
+        return beerRepository.findById(beerId)
+                .map(foundBeer -> {
+                    foundBeer.setBeerName(beerDTO.getBeerName());
+                    foundBeer.setBeerStyle(beerDTO.getBeerStyle());
+                    foundBeer.setUpc(beerDTO.getUpc());
+                    foundBeer.setQuantityOnHand(beerDTO.getQuantityOnHand());
+                    foundBeer.setPrice(beerDTO.getPrice());
+                    return foundBeer;
+                }).flatMap(beerRepository::save)
                 .map(beerMapper::beerToBeerDto);
     }
 }
