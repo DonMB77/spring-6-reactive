@@ -15,6 +15,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.mockOAuth2Login;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
@@ -26,7 +27,9 @@ class BeerControllerTest {
 
     @Test
     void testPatchBeerNotFound() {
-        webTestClient.patch()
+        webTestClient
+                .mutateWith(mockOAuth2Login())
+                .patch()
                 .uri(BeerController.LOCALHOST_BEER_PATH_WITH_ID, 999)
                 .body(Mono.just(BeerRepositoryTest.getTestBeer()), BeerDTO.class)
                 .exchange()
